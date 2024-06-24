@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Shared
+@using System.Security.Claims
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<ul class="navbar-nav">
+    @if (User.Identity.IsAuthenticated)
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        <li class="nav-item d-flex align-items-center justify-content-center">
+            <p id="manage" class="text-dark m-0">Hello @UserManager.GetUserName(User)</p>
+        </li>
+
+        @if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="registerForm" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li>
+        }
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="logout" asp-area="Identity" asp-page="/Account/Login">Logout</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>
